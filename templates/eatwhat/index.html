@@ -97,6 +97,10 @@
             text-decoration: none;
         }
 
+        .text-white {
+            color: white;
+        }
+
         #intro {
             background: url(/static/eatwhat/img/点菜背景压缩.jpg) no-repeat;
             background-size: cover;
@@ -149,7 +153,7 @@
             width: 700px;
         }
 
-        .intro-section, .about-section {
+        .intro-section, .about-section, .services-section, .contact-section {
             padding-top: 0px;
             min-width: 800px;
             min-height: 640px;
@@ -219,6 +223,10 @@
             padding-right: 25px;
         }
 
+        #menu-content {
+            margin-top: 50px;
+        }
+
 
 
     
@@ -230,13 +238,12 @@
 
     <script type="text/javascript">
 
-
         window.onload = function() {
             var cliHeight = window.document.body.clientHeight;
             if (cliHeight < 640) cliHeight = 640;
 
             var navHeight = $('#dj-nav').outerHeight();
-            var divs = new Array('#intro_container', '#choose_container');
+            var divs = new Array('#intro_container', '#choose_container', '#result_container');
             
             for (var cnt = 0; cnt < divs.length; cnt += 1) {
                 $(divs[cnt]).css('padding-top', (cliHeight - $(divs[cnt]).outerHeight(true)) / 2 );
@@ -248,7 +255,7 @@
             if (cliHeight < 640) cliHeight = 640;
 
             var navHeight = $('#dj-nav').outerHeight();
-            var divs = new Array('#intro_container', '#choose_container');
+            var divs = new Array('#intro_container', '#choose_container', '#result_container');
             
             for (var cnt = 0; cnt < divs.length; cnt += 1) {
                 $(divs[cnt]).css('padding-top', (cliHeight - $(divs[cnt]).outerHeight(true)) / 2 );
@@ -466,10 +473,15 @@
 
     <!-- Services Section -->
     <section id="result" class="services-section">
-        <div class="container">
+        <div id="result_container" class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <img src="/static/eatwhat/img/今日菜单头部.png">
+                </div>
+                <div id="menu-content" class="container-fluid col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-6 col-xs-offset-3">
+                    {% for course in menu %}
+                        <h4 class="text-center text-white col-lg-6 col-md-6 col-sm-6 col-xs-6">{{course.0}}</h4>
+                    {% endfor %}
                 </div>
             </div>
         </div>

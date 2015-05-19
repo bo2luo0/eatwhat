@@ -21,6 +21,7 @@ def index(request):
 
 	param = {}
 	options = []
+	menu = []
 
 	if request.user.is_authenticated():
 		param['user_logged_in'] = 'true'
@@ -35,10 +36,20 @@ def index(request):
 			""")
 
 		options = cursor.fetchall()
+
+		cursor.execute("""
+				SELECT name
+				FROM eatwhat_menu
+				LIMIT 8
+			""")
+		menu = cursor.fetchall()
+		print menu
+
 	finally:
 		cursor.close()
 
 	param['options'] = options
+	param['menu'] = menu
 
 	context = RequestContext(request, param)
 	return HttpResponse(template.render(context))
