@@ -88,10 +88,6 @@
             color: white;
         }
 
-        .carousel-canvas {
-            padding-top: 150px;
-        }
-
         .text-center {
             text-align: center;
         }
@@ -116,7 +112,8 @@
         }
 
         #result {
-            background: url(/static/eatwhat/img/todaybg.jpg);
+            background: url(/static/eatwhat/img/todaybg.jpg) no-repeat;
+            background-size: cover;
         }
 
         #canvas {
@@ -152,12 +149,10 @@
             width: 700px;
         }
 
-        .intro-section {
+        .intro-section, .about-section {
             padding-top: 0px;
-        }
-
-        .about-section {
-            padding-top: 40px;
+            min-width: 800px;
+            min-height: 640px;
         }
 
         .dj-modal-body {
@@ -225,9 +220,42 @@
         }
 
 
+
     
 
     </style>
+
+    <!-- jQuery -->
+    <script src="/static/eatwhat/js/jquery.js"></script>
+
+    <script type="text/javascript">
+
+
+        window.onload = function() {
+            var cliHeight = window.document.body.clientHeight;
+            if (cliHeight < 640) cliHeight = 640;
+
+            var navHeight = $('#dj-nav').outerHeight();
+            var divs = new Array('#intro_container', '#choose_container');
+            
+            for (var cnt = 0; cnt < divs.length; cnt += 1) {
+                $(divs[cnt]).css('padding-top', (cliHeight - $(divs[cnt]).outerHeight(true)) / 2 );
+            }
+        };
+
+        $(window).resize(function() {
+             var cliHeight = window.document.body.clientHeight;
+            if (cliHeight < 640) cliHeight = 640;
+
+            var navHeight = $('#dj-nav').outerHeight();
+            var divs = new Array('#intro_container', '#choose_container');
+            
+            for (var cnt = 0; cnt < divs.length; cnt += 1) {
+                $(divs[cnt]).css('padding-top', (cliHeight - $(divs[cnt]).outerHeight(true)) / 2 );
+            }
+        });
+
+    </script>
 
 </head>
 
@@ -382,16 +410,18 @@
               </a> 
             </div>  -->
 
-            <div class="container carousel-canvas">
-                <div class="row">
-                    <div class="col-lg-12">
-                       <img id="index-content" src="/static/eatwhat/img/首屏文字介绍(1).png">
-                       
+            <div class="container">
+                <div id="intro_container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                           <img id="index-content" src="/static/eatwhat/img/首屏文字介绍(1).png">
+                           
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                       <a id="start" class="btn page-scroll ghost" href="#choose"><span class="fa fa-cutlery fa-fw"></span> <img class="menuImg" src="/static/eatwhat/img/我要点菜0.png"></a>
+                    <div class="row">
+                        <div class="col-lg-12">
+                           <a id="start" class="btn page-scroll ghost" href="#choose"><span class="fa fa-cutlery fa-fw"></span> <img class="menuImg" src="/static/eatwhat/img/我要点菜0.png"></a>
+                        </div>
                     </div>
                 </div>            
             </div>
@@ -400,7 +430,7 @@
 
     <!-- About Section -->
     <section id="choose" class="about-section">
-        <div class="container">
+        <div id="choose_container" class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <img id="recommand" src="/static/eatwhat/img/recommand.png">
@@ -413,7 +443,7 @@
                             <div class="container-fluid">
                                 <div class="row">
                                 {% for option in options %}
-                                    <a id="c{{option.0}}" class="btn course col-lg-3 col-md-3" onclick="choose(this)">
+                                    <a id="c{{option.0}}" class="btn course col-lg-3 col-md-3 col-sm-3 col-xs-3" onclick="choose(this)">
                                         <div class="container-fluid">
                                             <div class="row">
                                                 {{option.1}}
@@ -456,8 +486,7 @@
         </div>
     </section>
 
-    <!-- jQuery -->
-    <script src="/static/eatwhat/js/jquery.js"></script>
+
 
     <!-- Bootstrap Core JavaScript -->
     <script src="/static/eatwhat/js/bootstrap.min.js"></script>
@@ -479,11 +508,11 @@
             var btnClass = $('#' + btn.id).attr('class');
             var course_id = parseInt(btn.id.substring(1))
 
-            if (btnClass == 'btn course col-lg-3 col-md-3') {
-                $('#' + btn.id).attr('class', 'btn course activeCourse col-lg-3 col-md-3');
+            if (btnClass == 'btn course col-lg-3 col-md-3 col-sm-3 col-xs-3') {
+                $('#' + btn.id).attr('class', 'btn course activeCourse col-lg-3 col-md-3 col-sm-3 col-xs-3');
                 selected[course_id] = 1;
-            } else if (btnClass == 'btn course activeCourse col-lg-3 col-md-3') {
-                $('#' + btn.id).attr('class', 'btn course col-lg-3 col-md-3');
+            } else if (btnClass == 'btn course activeCourse col-lg-3 col-md-3 col-sm-3 col-xs-3') {
+                $('#' + btn.id).attr('class', 'btn course col-lg-3 col-md-3 col-sm-3 col-xs-3');
                 selected[course_id] = 0;
             }
         }
