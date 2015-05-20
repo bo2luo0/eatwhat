@@ -15,16 +15,19 @@ import calendar
 import pytz  
 from django.contrib import auth
 
+admins = ['admin',]
 
 def index(request):
 	template = loader.get_template('eatwhat/index.html')
-
+	
 	param = {}
 	options = []
 	menu = []
 
 	if request.user.is_authenticated():
 		param['user_logged_in'] = 'true'
+	if request.user.username in admins:
+		param['is_admin'] = 'true'
 
 	try:
 		cursor = connection.cursor()
@@ -61,7 +64,10 @@ def djlogin(request):
 	user = auth.authenticate(username=username, password=password)
 	if user is not None and user.is_active:
 		auth.login(request, user)
-		return HttpResponse('@' + user.username)
+		if user.username in admins:
+			return HttpResponse('#' + user.username)
+		else:
+			return HttpResponse('@' + user.username)
 	else:
 		return HttpResponse('*')
 
@@ -85,6 +91,15 @@ def vote(request):
 			cursor.close()
 
 	return HttpResponse('ok')
+
+@login_required
+def adm(request):
+	if request.user.username in admins:
+		template = loader.get_template('eatwhat/admin.html')
+		context = RequestContext(request, {})
+		return HttpResponse(template.render(context))
+	else:
+		return HttpResponse('')
 
 
 

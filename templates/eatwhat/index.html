@@ -153,7 +153,7 @@
             width: 700px;
         }
 
-        .intro-section, .about-section, .services-section, .contact-section {
+        .intro-section, .about-section, .services-section, .contact-section, .admin-section {
             padding-top: 0px;
             min-width: 800px;
             min-height: 640px;
@@ -227,6 +227,28 @@
             margin-top: 50px;
         }
 
+        .dj-hidden {
+            display: none;
+        }
+
+        .dj-visible {
+            display: block;
+        }
+
+        .admin-section {
+            height: 100%;
+            text-align: center;
+        }
+
+        .full-height {
+            height: 100%;
+        }
+
+        #site-info {
+            text-align: center;
+            background-color: grey;
+        }
+
 
 
     
@@ -298,6 +320,9 @@
                     </li>
                     <li>
                         <a class="page-scroll white menu" href="#comment"><img class="menuImg" src="/static/eatwhat/img/我要留言0.png"></a>
+                    </li>
+                    <li id="nav_adm" {% if is_admin %} class="dj-visible" {% else %} class="hidden" {% endif %}>
+                        <a class="page-scroll white menu" href="#admin"><img class="menuImg" src="/static/eatwhat/img/我要留言0.png"></a>
                     </li>
 
                 </ul>
@@ -498,6 +523,25 @@
         </div>
     </section>
 
+    <!-- Admin Section -->
+    <div id="admin">
+    {% if is_admin %}
+        <section id="adm" class="intro-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1>Contact Section</h1>
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    </div>
+
+    <div id="site-info">
+        董老板与丛老板联合制作.
+    </div>
+
 
 
     <!-- Bootstrap Core JavaScript -->
@@ -538,10 +582,21 @@
                     'password': $('#password').val(),
                 },
                 success : function (result) {
-                    if (result.indexOf('@') == 0) {
+                    if (result.indexOf('@') == 0 || result.indexOf('#') == 0) {
                         $('#myModal').modal('hide');
                         $('#username_spot').html('<i class="fa fa-user fa-fw"></i> ' + result.substring(1));
                         $('#login_info').html('<a class="loginfo_anchor" href="#" onclick="djlogout()">登 出</a>');
+                        if (result.indexOf('#') == 0) {
+                            $.ajax({
+                                url: 'adm',
+                                type: 'GET',
+                                success: function (ret) {
+                                    $('#nav_adm').attr('class', 'dj-visible');
+                                    $('#admin').attr('class', 'full-height').html(ret);
+                                }
+
+                            });
+                        }
                     } else {
                         $('#login-error').html('用户名或密码错误');
                     }
@@ -556,6 +611,8 @@
                 success: function(result) {
                     $('#username_spot').html('');
                     $('#login_info').html('<a class="loginfo_anchor" data-toggle="modal" data-target="#myModal" href="#" >登 录</a>');
+                    $('#nav_adm').attr('class','hidden');
+                    $('#admin').attr('class','').html('');
                 }
             });
         }
