@@ -1,9 +1,20 @@
-<section id="adm" class="intro-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <h1>Contact Section</h1>
-            </div>
-        </div>
-    </div>
+<link rel="stylesheet" href="/static/eatwhat/css/morris.css">
+<script src="/static/eatwhat/js/raphael-min.js"></script>
+<script src="/static/eatwhat/js/morris.min.js"></script>
+
+<style type="text/css">
+</style>
+
+<section id="adm" class="admin-section">
 </section>
+
+<script type="text/javascript">
+	var cliHeight = window.document.body.clientHeight;
+    if (cliHeight < 640) cliHeight = 640;
+
+    var navHeight = $('#dj-nav').outerHeight();
+    var divs = new Array('#admin-container');
+    
+    $('#admin-container').css('padding-top', (cliHeight - $('#admin-container').outerHeight(true)) / 2 );
+
+</script>

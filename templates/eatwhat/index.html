@@ -111,7 +111,7 @@
             background-size: cover;
         }
 
-        #choose {
+        #choose, #adm {
             background: url(/static/eatwhat/img/2nd_bg.png);
         }
 
@@ -242,12 +242,15 @@
 
         .full-height {
             height: 100%;
+            min-width: 800px;
+            min-height: 640px;
         }
 
         #site-info {
             text-align: center;
             background-color: grey;
         }
+
 
 
 
@@ -273,7 +276,7 @@
         };
 
         $(window).resize(function() {
-             var cliHeight = window.document.body.clientHeight;
+            var cliHeight = window.document.body.clientHeight;
             if (cliHeight < 640) cliHeight = 640;
 
             var navHeight = $('#dj-nav').outerHeight();
@@ -321,7 +324,7 @@
                     <li>
                         <a class="page-scroll white menu" href="#comment"><img class="menuImg" src="/static/eatwhat/img/我要留言0.png"></a>
                     </li>
-                    <li id="nav_adm" {% if is_admin %} class="dj-visible" {% else %} class="hidden" {% endif %}>
+                    <li id="nav_adm" class="hidden">
                         <a class="page-scroll white menu" href="#admin"><img class="menuImg" src="/static/eatwhat/img/我要留言0.png"></a>
                     </li>
 
@@ -526,15 +529,19 @@
     <!-- Admin Section -->
     <div id="admin">
     {% if is_admin %}
-        <section id="adm" class="intro-section">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1>Contact Section</h1>
-                    </div>
-                </div>
-            </div>
-        </section>
+        <div id="admin-content">
+        </div>
+        <script type="text/javascript">
+             $.ajax({
+                url: 'adm',
+                type: 'GET',
+                success: function (ret) {
+                    $('#nav_adm').attr('class', 'dj-visible');
+                    $('#admin').attr('class', 'full-height');
+                    $('#admin-content').attr('class', 'full-height').html(ret);
+                }
+            });
+        </script>
     {% endif %}
     </div>
 
