@@ -108,11 +108,21 @@ def adm(request):
 					LIMIT 12
 				""")
 			result = cursor.fetchall()
+
+			cursor.execute("""
+					SELECT COUNT(DISTINCT(user_id)), DATE_FORMAT(date, '%Y-%m-%d') 
+					FROM eatwhat_vote
+					WHERE date IS NOT NULL
+					GROUP BY date
+				""")
+			active_users = cursor.fetchall()
+
 		finally:
 			cursor.close()
 
 		context = RequestContext(request, {
 			'result': result,
+			'active_users': active_users,
 			})
 		return HttpResponse(template.render(context))
 	else:

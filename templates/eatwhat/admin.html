@@ -71,8 +71,18 @@
 				  <div class="carousel-inner">
 				    <div class="item active">
 				    	<div class="container-fluid">
-		        			<div class="row col-lg-8 col-md-8 col-sm-8 col-xs-8">
-				        		<div id="bar-example">
+		        			<div class="row col-lg-6 col-md-6 col-sm-6 col-xs-6">
+		        				<div class="panel panel-default">
+		        					<p class="label label-primary"> 昨日票选结果 </p>
+					        		<div id="bar-example">
+					        		</div>
+				        		</div>
+				        	</div>
+				        	<div class="row col-lg-6 col-md-6 col-sm-6 col-xs-6">
+				        		<div class="panel panel-default">
+		        					<p class="label label-primary"> 活跃用户统计 </p>
+					        		<div id="active-user">
+					        		</div>
 				        		</div>
 				        	</div>
 		        		</div>
@@ -190,9 +200,33 @@
 	  ykeys: ['vote'],
 	  labels: ['票数'],
 	  xLabelAngle: 60,
+	  onlyIntegers: true,
 	});
 
-	$('svg').height($('svg').height() + 20);
+	// $('svg').height($('svg').height() + 20);
+
+	new Morris.Line({
+		// ID of the element in which to draw the chart.
+		element: 'active-user',
+		// Chart data records -- each entry in this array corresponds to a point on
+		// the chart.
+		data: [
+			{% for user in active_users %}
+				{ date: '{{user.1}}', value: {{user.0}} },
+			{% endfor %}
+		],
+		// The name of the data record attribute that contains x-values.
+		xkey: 'date',
+		// A list of names of data record attributes that contain y-values.
+		ykeys: ['value'],
+		// Labels for the ykeys -- will be displayed when you hover over the
+		// chart.
+		labels: ['投票数'],
+		lineWidth: 2,
+		pointSize: 0,
+		xLabelAngle: 60,
+		onlyIntegers: true,
+	});
 
 
 
