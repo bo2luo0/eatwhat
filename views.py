@@ -96,7 +96,24 @@ def vote(request):
 def adm(request):
 	if request.user.username in admins:
 		template = loader.get_template('eatwhat/admin.html')
-		context = RequestContext(request, {})
+
+		try:
+			cursor = connection.cursor()
+			cursor.execute("""
+					SELECT a.course_id ,a.name, COUNT(b.vote_id) AS votes
+					FROM eatwhat_course a LEFT OUTER JOIN eatwhat_vote b
+					ON a.course_id = b.course_id
+					GROUP BY a.course_id
+					ORDER BY votes DESC
+					LIMIT 12
+				""")
+			result = cursor.fetchall()
+		finally:
+			cursor.close()
+
+		context = RequestContext(request, {
+			'result': result,
+			})
 		return HttpResponse(template.render(context))
 	else:
 		return HttpResponse('')
